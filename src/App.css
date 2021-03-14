@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+
+.bar{
+  stroke:#555;
+}
+
+svg{
+  overflow: visible;
+  margin-bottom: 6rem;
+}
+
+.x-axis text{
+  font-size: 1rem;
+  transform: translate(150px, 12px);
+  transform: rotate(60deg);
+  text-anchor: start;
+}
+
+.barContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
