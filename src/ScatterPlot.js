@@ -40,7 +40,7 @@ const ScatterPlot = ({
     // x scale will be stat1s
     const xScale = d3
       .scaleLinear()      
-      .domain([d3.min(data,d=>d[stat1]),d3.max(data,d=>d[stat1])]).nice()
+      .domain([0.9*d3.min(data,d=>d[stat1]),1.1*d3.max(data,d=>d[stat1])]).nice()
       .range([0,width]);
 
    
@@ -65,6 +65,7 @@ const ScatterPlot = ({
         .attr('y',20)
         .attr('x',0)
 
+
     // add legend for color scale
     d3.select(svgRef.current)
         .append('text')
@@ -87,22 +88,31 @@ const ScatterPlot = ({
     // this will change according to the stat provides
     const yScale = d3
       .scaleLinear()
-      .domain([d3.min(data,d=>d[stat2]),d3.max(data,d=>d[stat2])]).nice()
+      .domain([0.9*d3.min(data,d=>d[stat2]),1.1*d3.max(data,d=>d[stat2])]).nice()
       .range([height,0]);
 
 
     const yAxis = d3.axisLeft(yScale).ticks(6);
 
-   
-    const paletteScale = d3.scaleSequential()
+    let paletteScale;
+
+    // create domain for ordinal scale
+    let teams = [...new Set(data.map(item => item.TEAM_ABBREVIATION))].sort();
+
+    const ordinalScale = d3.scaleOrdinal(d3.schemePastel1)
+    .domain(teams);
+
+    const contScale = d3.scaleSequential()
     .domain([d3.min(data,d=>d[stat3]),d3.max(data,d=>d[stat3])])
-    .interpolator(d3.interpolateViridis);
-       
+    .interpolator(d3.interpolateOrRd);
+
+    {stat3==='TEAM_ABBREVIATION' ? paletteScale = ordinalScale: paletteScale=contScale}
+  
     // radius scale
     const rScale = d3
     .scaleLinear()
     .domain([d3.min(data,d=>d[stat4]),d3.max(data,d=>d[stat4])])
-    .range([5,20]);
+    .range([10,30]);
 
       
     // call to create x axis
@@ -172,7 +182,8 @@ const ScatterPlot = ({
     .attr("cx", d=>xScale(d[stat1]))
     .attr("cy", d=>yScale(d[stat2]))
     .attr("r",d=>rScale(d[stat4]))
-    .style('opacity',0.6)
+    .style('opacity',0.8)
+    .attr("stroke","black")
     .attr('fill',d=>paletteScale(d[stat3]))
     
     

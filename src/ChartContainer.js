@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { PlayersContext } from './PlayersContext'
 
-import { getRandomData } from "./utils";
+
 
 import sample from './sample';
 
@@ -9,29 +10,17 @@ import {descending} from 'd3'
 
 
 
-
 // chart container
 // data state
 
 const ChartContainer = ({ renderChart }) => {
-  const [data, setData] = useState(sample);
-  return (
-    <div>
-      {renderChart(data)}
-     {/*  <button
-        style={{
-          width: "200px",
-          margin: "2em",
-          background: "#011627",
-          color: "white",
-          fontSize: "1em"
-        }}
-        onClick={() => setData(getRandomData())}
-      >
-        get new data
-      </button> */}
+  const {players,setPlayers} = useContext(PlayersContext)
 
-     
+  const [data, setData] = useState(players);
+  return (
+    <div className="chartContainer">
+      <h4>Chart Container</h4>
+      {renderChart(data)}    
     </div>
   );
 };

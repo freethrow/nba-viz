@@ -45,6 +45,10 @@
 svg{
   overflow: visible;
   margin-bottom: 6rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
+
+  
 }
 
 .x-axis text{
@@ -65,7 +69,7 @@ svg{
   position: absolute;			
   text-align: center;			
   width: 100px;					
-  height: 100px;					
+  					
   padding: 2px;				
   font: 12px sans-serif;		
   background: lightsteelblue; 
@@ -93,4 +97,25 @@ svg{
 .radiuslabel{
   font-weight: 100;
   transform: translate(-20px,-10px);
+}
+
+.chartContainer{
+
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-center;
+  align-items: flex-start;
+  
+}
+
+svg{
+  border: 2px solid black;
+}
+
+.horizontalBar{
+  display:flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  flex-direction: row;
+  border:2px solid red;
 }
