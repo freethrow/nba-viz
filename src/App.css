@@ -135,3 +135,7 @@ svg{
   flex-direction: row;
  
 }
+
+.axis-grid line {
+  stroke: #def;
+}

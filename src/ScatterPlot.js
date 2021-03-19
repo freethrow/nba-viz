@@ -92,7 +92,22 @@ const ScatterPlot = ({
       .range([height,0]);
 
 
-    const yAxis = d3.axisLeft(yScale).ticks(6);
+    const yAxis = d3.axisLeft(yScale);
+
+    const xAxisGrid = d3.axisBottom(xScale).tickSize(-height).tickFormat('').ticks(10);
+    const yAxisGrid = d3.axisLeft(yScale).tickSize(-width).tickFormat('').ticks(10);
+
+    // Create grids.
+    d3.select(svgRef.current).append('g')
+      .attr('class', 'x axis-grid')
+      .attr('transform', 'translate(0,' + height + ')')
+      .call(xAxisGrid);
+      d3.select(svgRef.current).append('g')
+      .attr('class', 'y axis-grid')
+      .call(yAxisGrid);
+
+
+
 
     let paletteScale;
 
