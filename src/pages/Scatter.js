@@ -158,6 +158,8 @@ const Scatter = () => {
 
 
                     </Form>
+
+                    <p>Select the 4 metrics and hover the players/circles.</p>
                 
                 </Col>
                 <Col sm={10}>

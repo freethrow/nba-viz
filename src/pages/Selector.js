@@ -112,11 +112,12 @@ const Selector = () => {
     return (
         <div>
             <Row>
-                <Col className="text-center"> <h2>Players Selector</h2>
-                        <p>Select the players to be compared.</p>
+                <Col> <h2>Players Selector</h2>
+                        <p>Select the players to be compared. Try with the Celtics and the Raptors, for example.</p>
                         <p>After you have selected the players, head off to the scatterplot 
                             or horizontal bar charts to see the visuals...</p>
                         <p>Hit the reset button to start over.</p>
+                    
             <Button className="m-3 mx-auto" variant="warning" onClick={()=>{
                 reset()
             }}>Reset</Button>
