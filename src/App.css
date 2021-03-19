@@ -24,6 +24,12 @@
   color: white;
 }
 
+.red{
+  background-color:#E20505 ;
+  font-size: 1.2rem;
+  color:black;
+}
+
 .App-link {
   color: #61dafb;
 }
@@ -58,17 +64,27 @@ svg{
   text-anchor: start;
 }
 
-.barContainer{
+.scatterContainer{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
+.barContainer{
+  
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+}
+
 .tooltip {	
   position: absolute;			
   text-align: center;			
-  width: 100px;					
+  width: 120px;	
+  border:1px solid blue;				
   					
   padding: 2px;				
   font: 12px sans-serif;		
@@ -109,7 +125,7 @@ svg{
 }
 
 svg{
-  border: 2px solid black;
+  
 }
 
 .horizontalBar{
@@ -117,5 +133,5 @@ svg{
   align-items: flex-end;
   justify-content: flex-end;
   flex-direction: row;
-  border:2px solid red;
+ 
 }

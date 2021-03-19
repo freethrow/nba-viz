@@ -19,7 +19,7 @@ const ChartContainer = ({ renderChart }) => {
   const [data, setData] = useState(players);
   return (
     <div className="chartContainer">
-      <h4>Chart Container</h4>
+      
       {renderChart(data)}    
     </div>
   );

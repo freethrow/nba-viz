@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
+import { legendColor, legendSize} from 'd3-svg-legend'
 
+
+import {firstBy} from "thenby"
+
+const formatPercent = d3.format(".0%");
 
 const HorizontalBarChart = ({
   width,
@@ -14,7 +19,7 @@ const HorizontalBarChart = ({
  
   // set the state of the chosen stat
 
- 
+
 
 
   
@@ -27,12 +32,16 @@ const HorizontalBarChart = ({
 
     d3.select(svgRef.current)
     .selectAll(".labels").remove() 
+
+    d3.select(svgRef.current)
+    .selectAll(".legendColor").remove() 
+    
     
     // y scale will ALWAYS be the players names
     const yScale = d3
       .scaleBand()
       .domain(data.map((value,index) => value.PLAYER_NAME))
-      .paddingInner(0.1)
+      .paddingInner(0.15)
       .range([height,0]);
 
     const yAxis = d3.axisLeft(yScale);
@@ -41,19 +50,37 @@ const HorizontalBarChart = ({
     const xScale = d3
       .scaleLinear()      
       .domain([0,d3.max(data,d=>d[stat])]).nice()
-      .range([0,width]);
+      .range([0,width])
 
 
 
-    const paletteScale = d3.scaleSequential()
-        .domain([d3.min(data,d=>d[stat]),d3.max(data,d=>d[stat])])
-        .interpolator(d3.interpolateBuPu);
+
+    let teams = [...new Set(data.map(item => item.TEAM_ABBREVIATION))].sort();
+
+    const paletteScale = d3.scaleOrdinal(d3.schemePastel1)
+        .domain(teams);
+
+    // create color legend
+    d3.select(svgRef.current)
+        .append("g")
+        .attr("class", "legendColor")
+        .attr("transform", `translate(${width+40},20)`);
+
+    const legendLinear = legendColor()
+        .shapeWidth(30)
+        .cells(10)
+        .orient('vertical')
+        .scale(paletteScale);
+
+    d3.select(".legendColor")
+        .call(legendLinear);
 
     const xAxis = d3.axisBottom(xScale).ticks(12);
+    if(stat.includes('PCT')){
+      xAxis.tickFormat(formatPercent)}
 
-   
        
-      
+
     // call to create x axis
     d3.select(svgRef.current)
         .select('.x-axis')
@@ -78,7 +105,7 @@ const HorizontalBarChart = ({
       .attr("x", 0)
       .attr("height", yScale.bandwidth())
       .attr("width", d => xScale(d[stat]))
-      .style("fill", (d,i) => paletteScale(d[stat]));
+      .style("fill", (d,i) => paletteScale(d['TEAM_ABBREVIATION']));
 
 
 
@@ -88,12 +115,20 @@ const HorizontalBarChart = ({
       .enter()
       .append("text")
       .attr('class','labels')
-      .text(d => d[stat])
+      .text(d => {
+        if(stat.includes("PCT")){
+          return parseFloat(100*d[stat]).toFixed(1)+"%"
+        } else {
+          return d[stat]
+        }
+        })
+      .attr("y", d =>yScale(d.PLAYER_NAME)+0.5*yScale.bandwidth()+5)
       .transition()
       .duration(1000)
-      .attr("x",d => xScale(d[stat])+20)
-      .attr("y", d =>yScale(d.PLAYER_NAME)+14)
-      .attr('text-anchor','middle') 
+      .attr("x",d => xScale(d[stat])+12)
+    
+      .attr('text-anchor','left')
+      .attr('font-size',0.15*yScale.bandwidth()+12) 
 
   };
 
@@ -145,6 +180,26 @@ const HorizontalBarChart = ({
         order alphabetical
       </button>
 
+      <button
+        style={{
+          width: "200px",
+          margin: "2em",
+          background: "#011627",
+          color: "white",
+          fontSize: "1em"
+        }}
+        onClick={() => {
+
+          data.sort(
+            firstBy("TEAM_ABBREVIATION", {ignoreCase:true})
+            .thenBy(stat)
+        );
+          
+            draw();
+        }}
+      >
+        order by team
+      </button>
       
       </div>
       </div>

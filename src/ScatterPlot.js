@@ -193,8 +193,10 @@ const ScatterPlot = ({
     .data(data)
     .on("mouseover", function(ev,d) {	        	
         tooltip		
-        .style("opacity", 1)	
-        .html(`<p>${d.PLAYER_NAME}<hr/>
+        .style("opacity", 0.8)	
+        .html(`<p><strong>${d.PLAYER_NAME}</strong><br/>
+        <strong>${d.TEAM_ABBREVIATION}</strong>
+        <hr/>
         ${stat1}:<strong>${d[stat1]}</strong><br/>
         ${stat2}:<strong>${d[stat2]}</strong><br/>
         ${stat3}:<strong>${d[stat3]}</strong><br/>
@@ -214,7 +216,7 @@ const ScatterPlot = ({
   const circles = data.map(d => <circle key={d.PLAYER_NAME} />);
 
   return (
-      <div className="barContainer">
+      <div className="scatterContainer">
     <svg
       width={width}
       height={height}

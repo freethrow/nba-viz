@@ -14,7 +14,7 @@ const Home = () => {
    
             <Row>
                 <Col>
-                    <Jumbotron>
+                    <Jumbotron className="red">
                         <h1>Visual NBA Players Analyzer</h1>
                         <p>This is a simple hero unit, a simple jumbotron-style component for calling
                             extra attention to featured content or information.</p>
@@ -23,11 +23,7 @@ const Home = () => {
                         </p>
                     </Jumbotron>
 
-                    <h3>Testing the context</h3>
-
-                    {players.map((player) => (
-                    <p key={player.index}>{player.PLAYER_NAME} from {player.TEAM_ABBREVIATION}</p>
-                    ))}
+                   
 
                 </Col>
             </Row>
