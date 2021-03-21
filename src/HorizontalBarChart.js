@@ -7,6 +7,23 @@ import {firstBy} from "thenby"
 
 const formatPercent = d3.format(".0%");
 
+const pctStats = [
+  'FG3_PCT',
+  'FT_PCT',
+  'W_PCT',
+  'AST_PCT',
+  'OREB_PCT',
+  'DREB_PCT',
+  'REB_PCT',
+  'TM_TOV_PCT',
+  'E_TOV_PCT',
+  'EFG_PCT',
+  'TS_PCT',
+  'USG_PCT',
+  'E_USG_PCT',
+  'FG_PCT'
+]
+
 const HorizontalBarChart = ({
   width,
   height,
@@ -49,7 +66,7 @@ const HorizontalBarChart = ({
     // this will change according to the stat provides, for now AGE
     const xScale = d3
       .scaleLinear()      
-      .domain([0,d3.max(data,d=>d[stat])]).nice()
+      .domain([d3.min(data,d=>d[stat]),d3.max(data,d=>d[stat])]).nice()
       .range([0,width])
 
 
@@ -76,7 +93,7 @@ const HorizontalBarChart = ({
         .call(legendLinear);
 
     const xAxis = d3.axisBottom(xScale).ticks(12);
-    if(stat.includes('PCT')){
+    if(pctStats.includes(stat)){
       xAxis.tickFormat(formatPercent)}
 
        

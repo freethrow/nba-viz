@@ -1,0 +1,15 @@
+
+
+ - Compare up to 4 players with donut and bar charts
+ - Messages context simple
+ - If no players selected, return to selector
+ - If more than 40 players selected, return to selector and remove
+ - Color Scheme prettier, bauhaus
+ - Advanced stats - second dataset
+ - Scrape all data from 1996-1997
+ - Insert into mongo db
+ - Provide FastAPI or Express backend with querying capabilities
+ - Create time series charts
+
+
+

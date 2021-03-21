@@ -1,6 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Row, Col, Form} from 'react-bootstrap'
 import { PlayersContext } from '../PlayersContext'
+import { DatasetContext } from '../DatasetContext'
+
+import metrics from './metrics'
 
 import ChartContainer from '../ChartContainer'
 import HorizontalBarChart from '../HorizontalBarChart'
@@ -10,9 +13,11 @@ import HorizontalBarChart from '../HorizontalBarChart'
 const Horizontal = () => {
 
     const {data,setPlayers} = useContext(PlayersContext)
-
+    
     
     const [stat,setStat] = useState('PTS')
+
+
 
     const setHeight = (numPlayers)=> {
         if(numPlayers<20){
@@ -30,6 +35,7 @@ const Horizontal = () => {
         <div>
 
             <h2>Horizontal Bar Chart Analysis</h2>
+           
             <Row>
                 <Col sm={2}>
                     <h4>Select metrics</h4>
@@ -39,31 +45,11 @@ const Horizontal = () => {
                         <Form.Control as="select" custom onChange={(event)=>{
                             setStat(event.target.value)
                         }}>
-                        <option>PTS</option>
-                        <option>REB</option>
-                        <option>OREB</option>
-                        <option>DREB</option>
-                        <option>MIN</option>
-                        <option>AST</option>
-                        <option>AGE</option>
-                        <option>STL</option>
-                        <option>BLK</option>
-                        <option>BLKA</option>
-                        <option>FGM</option>
-                        <option>FGA</option>
-                        <option>FG_PCT</option>
-                        <option>FG3M</option>
-                        <option>FG3A</option>
-                        <option>FG3_PCT</option>
-                        <option>FTM</option>
-                        <option>FTA</option>
-                        <option>FT_PCT</option>
-                        <option>TOV</option>
-                        <option>PF</option>
-                        <option>PFD</option>
-                        <option>PLUS_MINUS</option>
-                        <option>DD2</option>
-                        <option>TD3</option>
+                            {metrics.map((metric)=>(
+                                <option>{metric}</option>
+                            ))}
+                        
+                        
                         </Form.Control>
 
                     </Form.Group>

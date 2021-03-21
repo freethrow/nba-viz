@@ -26,6 +26,7 @@ const Header = () => {
                         <LinkContainer to="/horizontal">
                             <Nav.Link><i class="fas fa-address-book"></i>  Horizontal</Nav.Link>
                         </LinkContainer>
+                        
                          
                           
                     </Nav>                

@@ -1,7 +1,26 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import { transition } from "d3";
+
 import { legendColor, legendSize} from 'd3-svg-legend'
+
+const formatPercent = d3.format(".0%");
+
+const pctStats = [
+  'FG3_PCT',
+  'FT_PCT',
+  'W_PCT',
+  'AST_PCT',
+  'OREB_PCT',
+  'DREB_PCT',
+  'REB_PCT',
+  'TM_TOV_PCT',
+  'E_TOV_PCT',
+  'EFG_PCT',
+  'TS_PCT',
+  'USG_PCT',
+  'E_USG_PCT',
+  'FG_PCT'
+]
 
 
 const ScatterPlot = ({
@@ -36,6 +55,8 @@ const ScatterPlot = ({
    d3.select(".ylabel").remove();
    d3.select(".colorlabel").remove();
    d3.select(".radiuslabel").remove();
+   d3.selectAll(".axis-grid").remove();
+   
 
     // x scale will be stat1s
     const xScale = d3
@@ -46,6 +67,9 @@ const ScatterPlot = ({
    
     const xAxis = d3.axisBottom(xScale).ticks(12);
 
+    if(pctStats.includes(stat1)){
+      xAxis.tickFormat(formatPercent)}
+
     // add legend for x scale
     d3.select(svgRef.current)
         .append('text')
@@ -53,7 +77,7 @@ const ScatterPlot = ({
         .text(`metric: ${stat1}`)
         .style('stroke','gray')
         .attr('y',height+20)
-        .attr('x',width+30)
+        .attr('x',width+10)
 
 
     // add legend for y scale
@@ -63,7 +87,7 @@ const ScatterPlot = ({
         .text(`metric: ${stat2}`)
         .style('stroke','gray')
         .attr('y',20)
-        .attr('x',0)
+        .attr('x',20)
 
 
     // add legend for color scale
@@ -71,9 +95,10 @@ const ScatterPlot = ({
         .append('text')
         .attr('class','colorlabel')
         .text(`metric: ${stat3}`)
-        .style('stroke','gray')
+        .attr('stroke','#999')
+        .attr('font-weight',100)
         .attr('y',20)
-        .attr('x',width)
+        .attr('x',width+30)
 
 
     // add legend for radius scale
@@ -81,21 +106,26 @@ const ScatterPlot = ({
         .append('text')
         .attr('class','radiuslabel')
         .text(`metric: ${stat4}`)
-        .style('stroke','gray')
+        .attr('stroke','#999')
+        .attr('font-weight',100)
         .attr('y',140)
-        .attr('x',width)
+        .attr('x',width+30)
 
     // this will change according to the stat provides
     const yScale = d3
       .scaleLinear()
-      .domain([0.9*d3.min(data,d=>d[stat2]),1.1*d3.max(data,d=>d[stat2])]).nice()
+      .domain([0.9*d3.min(data,d=>d[stat2]),d3.max(data,d=>d[stat2])]).nice()
       .range([height,0]);
 
 
     const yAxis = d3.axisLeft(yScale);
 
+    if(pctStats.includes(stat2)){
+      yAxis.tickFormat(formatPercent)}
+
     const xAxisGrid = d3.axisBottom(xScale).tickSize(-height).tickFormat('').ticks(10);
     const yAxisGrid = d3.axisLeft(yScale).tickSize(-width).tickFormat('').ticks(10);
+
 
     // Create grids.
     d3.select(svgRef.current).append('g')
@@ -122,6 +152,10 @@ const ScatterPlot = ({
     .interpolator(d3.interpolateOrRd);
 
     {stat3==='TEAM_ABBREVIATION' ? paletteScale = ordinalScale: paletteScale=contScale}
+
+    if(pctStats.includes(stat3)){
+      paletteScale.tickFormat(formatPercent)}
+
   
     // radius scale
     const rScale = d3
@@ -147,11 +181,12 @@ const ScatterPlot = ({
     d3.select(svgRef.current)
         .append("g")
         .attr("class", "legendLinear")
-        .attr("transform", `translate(${width-20},20)`);
+        .attr("transform", `translate(${width+20},20)`);
 
     const legendLinear = legendColor()
         .shapeWidth(30)
         .cells(10)
+        .shapePadding(10)
         .orient('horizontal')
         .scale(paletteScale);
 
@@ -162,7 +197,7 @@ const ScatterPlot = ({
     d3.select(svgRef.current)
     .append("g")
     .attr("class", "legendSize")
-    .attr("transform", `translate(${width-20},150)`);
+    .attr("transform", `translate(${width+20},150)`);
 
     let legendRadius = legendSize()
     .shapeWidth(30)
